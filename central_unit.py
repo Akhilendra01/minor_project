@@ -72,10 +72,9 @@ def run_server(host="10.12.184.78", port=12345):
                 print("Error occurred while connecting to database:", err)
                 client_socket.close()
 
-        if command[: 3].lower()=="get":
+        elif command[: 3].lower()=="get":
             connection=connectDB()
             name=command.split(' ')[1]
-            print(name)
             if search(name, connection):
                 public_key=get_public_key(name, connection)
                 client_socket.send(public_key.encode())
@@ -83,6 +82,8 @@ def run_server(host="10.12.184.78", port=12345):
                 client_socket.send("No such psedunym exists".encode())
             connection.close()
             client_socket.close()
-
+        else:
+            client_socket.send("Bye".encode())
+            client_socket.close()           
 
 run_server()
