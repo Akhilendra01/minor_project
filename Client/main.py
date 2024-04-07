@@ -4,8 +4,8 @@ import Constants
 import Utils
 import json
 import threading
+
 ip=Helpers.get_ip_address()
-# port=Constants.CLIENT_PORT
 
 class Client:
     def __init__(self):
