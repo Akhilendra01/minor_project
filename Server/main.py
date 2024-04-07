@@ -3,8 +3,8 @@ import Helpers
 import socket
 import mysql.connector
 import json
-# import commands
 from .utils import *
+from .processor import *
 
 class Server:
     def __init__(self):
@@ -21,36 +21,15 @@ class Server:
             client_socket, client_addr = self.server_socket.accept()
             print("Connection accepted from:", client_addr)            
             command = client_socket.recv(2048).decode().lower().strip()
+            
             if command == "generate":
-                try: 
-                    data = generate_data()
-                    connection = self.db
-                    cursor = connection.cursor()
-                    sql = f"INSERT INTO users values('{client_addr[0]}', '{data['name'].strip()}', '{data['public_key']}')"
-                    try: 
-                        cursor.execute(sql)
-                        connection.commit()
-                        print('Entry done in database')                
-                        client_socket.send(json.dumps(data).encode())
-                    except:
-                        print('error in executing sql')
-                    finally:
-                        client_socket.close()
-                        connection.close()
-                except mysql.connector.Error as err:
-                    print("Error occurred while connecting to database:", err)
-                    client_socket.close()
+                response=generate(self.db, client_addr)
+                client_socket.send(response.encode())
+                client_socket.close()
 
             elif command[: 3].lower()=="get":
-                connection=self.db
                 name=command.split(' ')[1]
-                if search(name, connection):
-                    public_key=get_public_key(name, connection)
-                    client_socket.send(public_key.encode())
-                else:
-                    client_socket.send("No such psedunym/ip exists".encode())
-                connection.close()
-                client_socket.close()
+                client_socket.send(get_pub_key(name, self.db).encode())
             else:
                 client_socket.send("Bye".encode())
                 client_socket.close()  
