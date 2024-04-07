@@ -1,12 +1,10 @@
 import Constants
 import Helpers
 import socket
-from .connect_db import connect_db
-from .generate_data import generate_data
-from .get_public_key import get_public_key
-from .search import search
 import mysql.connector
 import json
+# import commands
+from .utils import *
 
 class Server:
     def __init__(self):
