@@ -4,4 +4,6 @@ from .generate_pseudonym import generate_pseudonym
 from .get_ip_address import get_ip_address
 from .private_key_to_text import private_key_to_text
 from .public_key_to_text import public_key_to_text
+from .bdss_sign import sign
+from .bdss_verify import verify
 
