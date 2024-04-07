@@ -1,16 +1,14 @@
 import Constants
 import Helpers
 import socket
-import mysql.connector
-import json
-from .utils import *
+import Utils
 from .processor import *
 
 class Server:
     def __init__(self):
         self.host=Helpers.get_ip_address()
         self.port=Constants.CENTRAL_PORT
-        self.db=connect_db()
+        self.db=Utils.connect_db()
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(1)

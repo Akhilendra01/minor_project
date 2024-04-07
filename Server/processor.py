@@ -1,11 +1,11 @@
 import Helpers
 import json
 import mysql.connector
-from .utils import *
+import Utils
 
 def generate(connection, client_addr):
     try: 
-        data = generate_data()
+        data = Utils.generate_data()
         cursor = connection.cursor()
         sql = f"INSERT INTO users values('{client_addr[0]}', '{data['name'].strip()}', '{data['public_key']}')"
         try: 
@@ -21,8 +21,8 @@ def generate(connection, client_addr):
         return "An error has occured"
     
 def get_pub_key(name, connection):
-    if search(name, connection):
-        public_key=get_public_key(name, connection)
+    if Utils.search(name, connection):
+        public_key=Utils.get_public_key(name, connection)
         return public_key
     else:
         return "No such psedunym/ip exists"
