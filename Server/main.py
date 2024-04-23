@@ -28,6 +28,7 @@ class Server:
             elif command[: 3].lower()=="get":
                 name=command.split(' ')[1]
                 client_socket.send(get_pub_key(name, self.db).encode())
+                client_socket.close()
             else:
                 client_socket.send("Bye".encode())
                 client_socket.close()  
