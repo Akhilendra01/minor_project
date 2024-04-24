@@ -84,7 +84,7 @@ class Client:
             decrypted_message=self.decrypt(message)
             print(f"Received = {decrypted_message}")
             notification_title = "New Message Received"
-            notification_message = f"From: {client_addr[0]}\nMessage: {decrypted_message}"
+            notification_message = f"From: {self.get_pseudonym(client_addr[0])}\nMessage: {decrypted_message}"
             notification.notify(title=notification_title, message=notification_message)
 
     def run(self):
