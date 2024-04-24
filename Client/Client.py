@@ -59,7 +59,7 @@ class Client:
             self.send_message(target_ip, message)
             print(f"Sent = {message}")
     
-    def get_pseudonym(self, ip):
+    def get_pseudonym(self, ip, notify=True):
         message=f"getnym {ip}"
         send_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         send_socket.connect((Constants.CENTRAL_IP, Constants.CENTRAL_PORT))
@@ -68,9 +68,10 @@ class Client:
         send_socket.close()
         if pseudonym is None:
             pseudonym='None'
-        notification_title = f"Pseudonym Search"
-        notification_message = f"Pseudonym Received for {ip} is {pseudonym}"
-        notification.notify(title=notification_title, message=notification_message)
+        if notify:
+            notification_title = f"Pseudonym Search"
+            notification_message = f"Pseudonym Received for {ip} is {pseudonym}"
+            notification.notify(title=notification_title, message=notification_message)
         return pseudonym
     
     def receiver(self):
@@ -84,7 +85,7 @@ class Client:
             decrypted_message=self.decrypt(message)
             print(f"Received = {decrypted_message}")
             notification_title = "New Message Received"
-            notification_message = f"From: {self.get_pseudonym(client_addr[0])}\nMessage: {decrypted_message}"
+            notification_message = f"From: {self.get_pseudonym(client_addr[0], notify=False)}\nMessage: {decrypted_message}"
             notification.notify(title=notification_title, message=notification_message)
 
     def run(self):
