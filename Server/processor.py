@@ -26,3 +26,6 @@ def get_pub_key(name, connection):
         return public_key
     else:
         return "No such psedunym/ip exists"
+
+def getnym(ip, connection):
+    return Utils.getnym(ip, connection)

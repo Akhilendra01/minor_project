@@ -4,7 +4,7 @@ import Constants
 import Utils
 import json
 import threading
-
+from plyer import notification
 
 class Client:
     def __init__(self):
@@ -41,12 +41,26 @@ class Client:
         decrypted_message = Helpers.decrypt_message(self.data['private_key'], message)
         return decrypted_message
 
-    def sender(self, target_ip, message):
+    def sender(self):
         while True:
             target_ip = input("Enter target IPv4\n")
             message = "handshake start"
             self.send_message(target_ip, message)
             print(f"Sent = {message}")
+    
+    def get_pseudonym(self, ip):
+        message=f"getnym {ip}"
+        send_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        send_socket.connect((Constants.CENTRAL_IP, Constants.CENTRAL_PORT))
+        send_socket.send(message.encode())
+        pseudonym=send_socket.recv(2048).decode()
+        send_socket.close()
+        if pseudonym is None:
+            pseudonym='None'
+        notification_title = f"Pseudonym Search"
+        notification_message = f"Pseudonym Received for {ip} is {pseudonym}"
+        notification.notify(title=notification_title, message=notification_message)
+        return pseudonym
     
     def receiver(self):
         print(f"Client Waiting to Connect [{self.ip}]")
@@ -56,13 +70,14 @@ class Client:
             client_socket, client_addr = self.client_socket.accept()
             print("Connection accepted from:", client_addr)            
             message = client_socket.recv(4096)
-            decryted_message=self.decrypt(message)
-            print(f"Received = {decryted_message}")
+            decrypted_message=self.decrypt(message)
+            print(f"Received = {decrypted_message}")
+            notification_title = "New Message Received"
+            notification_message = f"From: {client_addr[0]}\nMessage: {decrypted_message}"
+            notification.notify(title=notification_title, message=notification_message)
 
     def run(self):
-        thread1=threading.Thread(target=self.sender)
+        # thread1=threading.Thread(target=self.sender)
         thread2=threading.Thread(target=self.receiver)
-        thread1.start()
+        # thread1.start()
         thread2.start()
-
-Client().run()

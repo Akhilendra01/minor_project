@@ -40,3 +40,10 @@ def search(name: str, connection):
     cursor.execute(sql)
     rows=cursor.fetchall()
     return rows if rows else None
+
+def getnym(ip, connection):
+    sql=f"select pseudonym from users where ip='{ip.strip()}';"
+    cursor=connection.cursor()
+    cursor.execute(sql)
+    rows=cursor.fetchall()
+    return rows[0][0]

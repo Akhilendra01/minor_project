@@ -25,10 +25,16 @@ class Server:
                 client_socket.send(response.encode())
                 client_socket.close()
 
+            elif command[: 6].lower()=="getnym":
+                name=command.split(' ')[1]
+                client_socket.send(getnym(name, self.db).encode())
+                client_socket.close()
+
             elif command[: 3].lower()=="get":
                 name=command.split(' ')[1]
                 client_socket.send(get_pub_key(name, self.db).encode())
                 client_socket.close()
+
             else:
                 client_socket.send("Bye".encode())
                 client_socket.close()  
