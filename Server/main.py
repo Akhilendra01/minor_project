@@ -25,6 +25,11 @@ class Server:
                 client_socket.send(response.encode())
                 client_socket.close()
 
+            elif command[: 5].lower()=="getip":
+                name=command.split(' ')[1]
+                client_socket.send(getip(name, self.db).encode())
+                client_socket.close()
+
             elif command[: 6].lower()=="getnym":
                 name=command.split(' ')[1]
                 client_socket.send(getnym(name, self.db).encode())

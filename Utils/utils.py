@@ -28,6 +28,7 @@ def generate_data():
     }
 
 def get_public_key(name: str, connection)->str:
+    print(name)
     sql=f"select public_key from users where pseudonym='{name.strip()}' or ip='{name.strip()}';"
     cursor=connection.cursor()
     cursor.execute(sql)
@@ -43,6 +44,13 @@ def search(name: str, connection):
 
 def getnym(ip, connection):
     sql=f"select pseudonym from users where ip='{ip.strip()}';"
+    cursor=connection.cursor()
+    cursor.execute(sql)
+    rows=cursor.fetchall()
+    return rows[0][0]
+
+def getip(name, connection):
+    sql=f"select ip from users where pseudonym='{name}';"
     cursor=connection.cursor()
     cursor.execute(sql)
     rows=cursor.fetchall()

@@ -29,3 +29,6 @@ def get_pub_key(name, connection):
 
 def getnym(ip, connection):
     return Utils.getnym(ip, connection)
+
+def getip(name, connection):
+    return Utils.getip(name, connection)

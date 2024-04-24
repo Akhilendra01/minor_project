@@ -29,8 +29,19 @@ class Client:
         send_socket.close()
         return pub_key
 
+    def getip(self, target):
+        message=f"getip {target}"
+        send_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        send_socket.connect((Constants.CENTRAL_IP, Constants.CENTRAL_PORT))
+        send_socket.send(message.encode())
+        ip=send_socket.recv(2048).decode()
+        send_socket.close()
+        return ip
+    
     def send_message(self, target_ip, message, port=Constants.CLIENT_PORT):
         target_pub_key = self.get_public_key(target_ip)
+        if len(target_ip)==6:
+            target_ip=self.getip(target_ip)
         encrypted_message = Helpers.encrypt_message(target_pub_key, message)
         send_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         send_socket.connect((target_ip, Constants.CLIENT_PORT_RECV))

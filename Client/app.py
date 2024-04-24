@@ -34,6 +34,7 @@ class ClientGUI:
     def send_message(self):
         target_ip = self.target_ip_entry.get()
         message = self.message_entry.get()
+        print(target_ip, message)
         if message!='':
             self.client.send_message(target_ip, message)
         else:
