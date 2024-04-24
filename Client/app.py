@@ -16,7 +16,7 @@ class ClientGUI:
         self.create_widgets()
 
     def create_widgets(self):
-        self.target_ip_label = tk.Label(self.root, text="Enter Target IP:")
+        self.target_ip_label = tk.Label(self.root, text="Enter Target IP / Pseudonym:")
         self.target_ip_label.pack()
 
         self.target_ip_entry = tk.Entry(self.root)
